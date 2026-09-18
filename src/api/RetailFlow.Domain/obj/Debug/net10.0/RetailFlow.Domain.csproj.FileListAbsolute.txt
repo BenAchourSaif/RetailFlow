@@ -1,0 +1,11 @@
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\bin\Debug\net10.0\RetailFlow.Domain.deps.json
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\bin\Debug\net10.0\RetailFlow.Domain.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\bin\Debug\net10.0\RetailFlow.Domain.pdb
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\RetailFlow.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\RetailFlow.Domain.AssemblyInfoInputs.cache
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\RetailFlow.Domain.AssemblyInfo.cs
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\RetailFlow.Domain.csproj.CoreCompileInputs.cache
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\RetailFlow.Domain.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\refint\RetailFlow.Domain.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\RetailFlow.Domain.pdb
+D:\side projects\RetailFlow\src\api\RetailFlow.Domain\obj\Debug\net10.0\ref\RetailFlow.Domain.dll

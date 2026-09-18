@@ -1,0 +1,15 @@
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\bin\Debug\net10.0\RetailFlow.Application.deps.json
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\bin\Debug\net10.0\RetailFlow.Application.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\bin\Debug\net10.0\RetailFlow.Application.pdb
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\bin\Debug\net10.0\RetailFlow.Domain.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\bin\Debug\net10.0\RetailFlow.Domain.pdb
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.csproj.AssemblyReference.cache
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.AssemblyInfoInputs.cache
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.AssemblyInfo.cs
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.csproj.CoreCompileInputs.cache
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFl.0930F5C8.Up2Date
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\refint\RetailFlow.Application.dll
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\RetailFlow.Application.pdb
+D:\side projects\RetailFlow\src\api\RetailFlow.Application\obj\Debug\net10.0\ref\RetailFlow.Application.dll
