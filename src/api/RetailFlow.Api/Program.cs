@@ -1,4 +1,18 @@
+
+using RetailFlow.Application.Interfaces;
+using RetailFlow.Application.Services;
+using RetailFlow.Api.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+//builder.Services.AddScoped<IProductService, ProductService>();
+//builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddSingleton<IProductService, ProductService>();
+builder.Services.AddSingleton<IInventoryService, InventoryService>();
+builder.Services.AddSingleton<ISaleService, SaleService>();
+
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -30,13 +44,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("Frontend");
 
-app.MapGet("/api/health", () =>
-{
-    return Results.Ok(
-	new {
-		status = "ok",
-		timestamp = DateTime.UtcNow
-		});
-});
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.MapControllers();
 app.Run();

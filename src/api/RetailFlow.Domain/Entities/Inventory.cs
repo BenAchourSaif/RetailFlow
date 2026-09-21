@@ -43,5 +43,20 @@ namespace RetailFlow.Domain.Entities
                 : (totalCurrentValue + totalIncomingValue) / Quantity;
         }
 
+
+        public void RemoveStock(decimal quantity)
+        {
+            if (quantity <= 0)
+                throw new ArgumentException("Quantity must be greater than zero.");
+
+            if (quantity > Quantity)
+                throw new InvalidOperationException("Insufficient stock.");
+
+            Quantity -= quantity;
+
+            if (Quantity == 0)
+                AverageCost = 0;
+        }
+
     }
 }
