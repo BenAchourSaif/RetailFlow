@@ -3,6 +3,7 @@ using RetailFlow.Application.Interfaces;
 using RetailFlow.Domain.Entities;
 using RetailFlow.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using RetailFlow.Domain.Enums;
 
 namespace RetailFlow.Infrastructure.Services
 {
@@ -60,6 +61,20 @@ namespace RetailFlow.Infrastructure.Services
                 request.Quantity,
                 request.UnitCost);
 
+            var movement = new StockMovement
+            {
+                Id = Guid.NewGuid(),
+                InventoryId = inventory.Id,
+                Type = StockMovementType.Receipt,
+                Quantity = request.Quantity,
+                UnitCost = request.UnitCost,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _db.StockMovements.AddAsync(
+                movement,
+                cancellationToken);
+
             await _inventoryRepository.SaveChangesAsync(
                 cancellationToken);
 
@@ -83,10 +98,11 @@ namespace RetailFlow.Infrastructure.Services
         }
 
         public async Task<InventoryResponse> RemoveStockAsync(
-            Guid storeId,
-            Guid productId,
-            decimal quantity,
-            CancellationToken cancellationToken = default)
+                Guid storeId,
+                Guid productId,
+                decimal quantity,
+                StockMovementType movementType,
+                CancellationToken cancellationToken = default)
         {
 
             var storeExists = await _db.Stores
@@ -112,6 +128,21 @@ namespace RetailFlow.Infrastructure.Services
                 throw new KeyNotFoundException("Inventory not found.");
 
             inventory.RemoveStock(quantity);
+
+            var movement = new StockMovement
+            {
+                Id = Guid.NewGuid(),
+                InventoryId = inventory.Id,
+                Type = movementType,
+                Quantity = quantity,
+                UnitCost = inventory.AverageCost,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _db.StockMovements.AddAsync(
+                movement,
+                cancellationToken);
+
 
             await _inventoryRepository.SaveChangesAsync(
                 cancellationToken);

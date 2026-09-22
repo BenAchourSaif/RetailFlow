@@ -1,4 +1,5 @@
-﻿using RetailFlow.Application.DTOs.Inventory; 
+﻿using RetailFlow.Application.DTOs.Inventory;
+using RetailFlow.Domain.Enums;
 
 namespace RetailFlow.Application.Interfaces
 {
@@ -17,6 +18,7 @@ namespace RetailFlow.Application.Interfaces
             Guid storeId,
             Guid productId,
             decimal quantity,
+            StockMovementType movementType,
             CancellationToken cancellationToken = default);
     }
 }

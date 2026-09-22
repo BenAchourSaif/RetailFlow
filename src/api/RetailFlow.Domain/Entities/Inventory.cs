@@ -39,8 +39,14 @@ namespace RetailFlow.Domain.Entities
             Quantity += quantity;
 
             AverageCost = Quantity == 0
-                ? 0
-                : (totalCurrentValue + totalIncomingValue) / Quantity;
+               ? 0
+               : Math.Round(
+                   (totalCurrentValue + totalIncomingValue) / Quantity,
+                   4,
+                   MidpointRounding.AwayFromZero);
+
+
+
         }
 
 
