@@ -4,8 +4,12 @@ namespace RetailFlow.Application.Interfaces
 {
     public interface IProductService
     {
-        ProductResponse Create(CreateProductRequest request);
+         Task<ProductResponse> CreateAsync(
+        CreateProductRequest request,
+        CancellationToken cancellationToken = default);
 
-        ProductResponse? Get(Guid id);
+    Task<ProductResponse?> GetAsync(
+        Guid id,
+        CancellationToken cancellationToken = default);
     }
 }

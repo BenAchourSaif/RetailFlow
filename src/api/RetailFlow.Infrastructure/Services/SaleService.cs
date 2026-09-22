@@ -1,29 +1,36 @@
 ﻿using RetailFlow.Application.DTOs.Sales;
 using RetailFlow.Application.Interfaces;
 using RetailFlow.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RetailFlow.Infrastructure.Persistence;
 
-namespace RetailFlow.Application.Services
+namespace RetailFlow.Infrastructure.Services
 {
     public class SaleService : ISaleService
     {
         private readonly IProductService _productService;
         private readonly IInventoryService _inventoryService;
-
-        private readonly Dictionary<Guid, Sale> _sales = new();
+        private readonly ISaleRepository _saleRepository;
+        private readonly RetailFlowDbContext _db;
 
         public SaleService(
             IProductService productService,
-            IInventoryService inventoryService)
+            IInventoryService inventoryService,
+            ISaleRepository saleRepository)
         {
             _productService = productService;
             _inventoryService = inventoryService;
+            _saleRepository = saleRepository;
         }
-
-        public SaleResponse Create(CreateSaleRequest request)
+       
+        public async Task<SaleResponse> CreateAsync(
+    CreateSaleRequest request,
+    CancellationToken cancellationToken = default)
         {
+            var storeExists = _db.Stores.Any(x => x.Id == request.StoreId);
+
+            if (!storeExists)
+                throw new KeyNotFoundException("Store not found.");
+
             var sale = new Sale
             {
                 Id = Guid.NewGuid(),
@@ -33,24 +40,28 @@ namespace RetailFlow.Application.Services
 
             foreach (var lineRequest in request.Lines)
             {
-                var product = _productService.Get(lineRequest.ProductId);
+                var product = await _productService.GetAsync(
+                                lineRequest.ProductId,
+                                cancellationToken);
 
                 if (product is null)
                     throw new KeyNotFoundException("Product not found.");
 
-                var inventory = _inventoryService.Get(
-                    request.StoreId,
-                    lineRequest.ProductId);
+                var inventory = await _inventoryService.GetAsync(
+                         request.StoreId,
+                         lineRequest.ProductId,
+                         cancellationToken);
 
                 if (inventory is null)
                     throw new KeyNotFoundException("Inventory not found.");
 
                 var unitCost = inventory.AverageCost;
 
-                _inventoryService.RemoveStock(
-                    request.StoreId,
-                    lineRequest.ProductId,
-                    lineRequest.Quantity);
+                await _inventoryService.RemoveStockAsync(
+                     request.StoreId,
+                     lineRequest.ProductId,
+                     lineRequest.Quantity,
+                     cancellationToken);
 
                 var line = new SaleLine
                 {
@@ -71,8 +82,12 @@ namespace RetailFlow.Application.Services
                 sale.TotalCost +=
                     line.Quantity * line.UnitCost;
             }
+            await _saleRepository.AddAsync(
+                               sale,
+                               cancellationToken);
 
-            _sales[sale.Id] = sale;
+            await _saleRepository.SaveChangesAsync(
+                cancellationToken);
 
             return new SaleResponse
             {

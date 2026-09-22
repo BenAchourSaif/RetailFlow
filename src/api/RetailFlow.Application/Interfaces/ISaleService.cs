@@ -4,6 +4,8 @@ namespace RetailFlow.Application.Interfaces
 {
     public interface ISaleService
     {
-        SaleResponse Create(CreateSaleRequest request);
+        Task<SaleResponse> CreateAsync(
+    CreateSaleRequest request,
+    CancellationToken cancellationToken = default);
     }
 }

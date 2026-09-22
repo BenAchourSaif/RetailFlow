@@ -2,15 +2,34 @@
 using RetailFlow.Application.Interfaces;
 using RetailFlow.Application.Services;
 using RetailFlow.Api.Middleware;
+using Microsoft.EntityFrameworkCore;
+using RetailFlow.Infrastructure.Persistence;
+using RetailFlow.Infrastructure.Persistence.Repositories;
+using RetailFlow.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-//builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository,  ProductRepository>();
+builder.Services.AddScoped<IInventoryRepository,InventoryRepository>();
+builder.Services.AddScoped<ISaleRepository,     SaleRepository>();
+builder.Services.AddScoped<IProductService,     ProductService>();
+builder.Services.AddScoped<IInventoryService,   InventoryService>();
+builder.Services.AddScoped<ISaleService,        SaleService>();
+builder.Services.AddScoped<IStoreService,       StoreService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+
 //builder.Services.AddScoped<IInventoryService, InventoryService>();
-builder.Services.AddSingleton<IProductService, ProductService>();
-builder.Services.AddSingleton<IInventoryService, InventoryService>();
-builder.Services.AddSingleton<ISaleService, SaleService>();
+//builder.Services.AddSingleton<IProductService, ProductService>();
+//builder.Services.AddSingleton<IInventoryService, InventoryService>();
+//builder.Services.AddSingleton<ISaleService, SaleService>();
+
+
+builder.Services.AddDbContext<RetailFlowDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("RetailFlowDb")));
+
 
 builder.Services.AddControllers();
 

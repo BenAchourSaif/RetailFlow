@@ -6,9 +6,16 @@ namespace RetailFlow.Application.Services
 {
     public class ProductService : IProductService
     {
-        private readonly Dictionary<Guid, Product> _products = new();
+        private readonly IProductRepository _productRepository;
 
-        public ProductResponse Create(CreateProductRequest request)
+        public ProductService(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        public async Task<ProductResponse> CreateAsync(
+            CreateProductRequest request,
+            CancellationToken cancellationToken = default)
         {
             var product = new Product
             {
@@ -19,19 +26,29 @@ namespace RetailFlow.Application.Services
 
             product.UpdatePricing(
                 request.SellingPrice,
-                request.VatRate
-            );
+                request.VatRate);
 
-            _products[product.Id] = product;
+            await _productRepository.AddAsync(
+                product,
+                cancellationToken);
+
+            await _productRepository.SaveChangesAsync(
+                cancellationToken);
 
             return MapToResponse(product);
         }
 
-        public ProductResponse? Get(Guid id)
+        public async Task<ProductResponse?> GetAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            return _products.TryGetValue(id, out var product)
-                ? MapToResponse(product)
-                : null;
+            var product = await _productRepository.GetByIdAsync(
+                id,
+                cancellationToken);
+
+            return product is null
+                ? null
+                : MapToResponse(product);
         }
 
         private static ProductResponse MapToResponse(Product product)

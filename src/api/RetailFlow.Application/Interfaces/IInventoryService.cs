@@ -1,20 +1,22 @@
-﻿using RetailFlow.Application.DTOs.Inventory;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using RetailFlow.Application.DTOs.Inventory; 
 
 namespace RetailFlow.Application.Interfaces
 {
     public interface IInventoryService
     {
-        InventoryResponse ReceiveStock(ReceiveStockRequest request);
+        Task<InventoryResponse> ReceiveStockAsync(
+        ReceiveStockRequest request,
+        CancellationToken cancellationToken = default);
 
-        InventoryResponse? Get(Guid storeId, Guid productId);
-
-        InventoryResponse RemoveStock(
+        Task<InventoryResponse?> GetAsync(
             Guid storeId,
             Guid productId,
-            decimal quantity);
+            CancellationToken cancellationToken = default);
 
+        Task<InventoryResponse> RemoveStockAsync(
+            Guid storeId,
+            Guid productId,
+            decimal quantity,
+            CancellationToken cancellationToken = default);
     }
 }

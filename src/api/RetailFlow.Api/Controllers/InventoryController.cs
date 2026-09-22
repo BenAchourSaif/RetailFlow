@@ -17,20 +17,27 @@ namespace RetailFlow.Api.Controllers
         }
 
         [HttpPost("receive")]
-        public ActionResult<InventoryResponse> ReceiveStock(
-            [FromBody] ReceiveStockRequest request)
+        public async Task<ActionResult<InventoryResponse>> ReceiveStock(
+            [FromBody] ReceiveStockRequest request,
+            CancellationToken cancellationToken)
         {
-            var inventory = _inventoryService.ReceiveStock(request);
+            var inventory = await _inventoryService.ReceiveStockAsync(
+                request,
+                cancellationToken);
 
             return Ok(inventory);
         }
 
         [HttpGet("{storeId:guid}/{productId:guid}")]
-        public ActionResult<InventoryResponse> Get(
+        public async Task<ActionResult<InventoryResponse>> Get(
             Guid storeId,
-            Guid productId)
+            Guid productId,
+            CancellationToken cancellationToken)
         {
-            var inventory = _inventoryService.Get(storeId, productId);
+            var inventory = await _inventoryService.GetAsync(
+                storeId,
+                productId,
+                cancellationToken);
 
             if (inventory is null)
                 return NotFound();

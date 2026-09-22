@@ -17,10 +17,13 @@ namespace RetailFlow.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<SaleResponse> Create(
-            [FromBody] CreateSaleRequest request)
+        public async Task<ActionResult<SaleResponse>> Create(
+                        [FromBody] CreateSaleRequest request,
+                        CancellationToken cancellationToken)
         {
-            var sale = _saleService.Create(request);
+            var sale = await _saleService.CreateAsync(
+                                            request,
+                                            cancellationToken);
 
             return Created($"/api/sales/{sale.Id}", sale);
         }
