@@ -7,10 +7,11 @@ namespace RetailFlow.Infrastructure.Persistence.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly RetailFlowDbContext _dbContext;
-
-        public ProductRepository(RetailFlowDbContext dbContext)
+        private readonly ITenantContext _tenantContext;
+        public ProductRepository(RetailFlowDbContext dbContext, ITenantContext tenantContext)
         {
             _dbContext = dbContext;
+            _tenantContext = tenantContext;
         }
 
         public async Task<Product?> GetByIdAsync(
@@ -18,9 +19,9 @@ namespace RetailFlow.Infrastructure.Persistence.Repositories
             CancellationToken cancellationToken = default)
         {
             return await _dbContext.Products
+                 .AsNoTracking()
                 .FirstOrDefaultAsync(
-                    product => product.Id == id,
-                    cancellationToken);
+                    product => product.Id == id && product.TenantId == _tenantContext.TenantId);
         }
 
         public async Task AddAsync(

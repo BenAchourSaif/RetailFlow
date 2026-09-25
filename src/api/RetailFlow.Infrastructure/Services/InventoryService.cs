@@ -11,27 +11,39 @@ namespace RetailFlow.Infrastructure.Services
     {
         private readonly RetailFlowDbContext _db;
         private readonly IInventoryRepository _inventoryRepository;
+        private readonly ITenantContext _tenantContext;
+
         public InventoryService(
-                  RetailFlowDbContext db,
-                  IInventoryRepository inventoryRepository)
+              RetailFlowDbContext db,
+              IInventoryRepository inventoryRepository,
+              ITenantContext tenantContext)
         {
             _db = db;
             _inventoryRepository = inventoryRepository;
+            _tenantContext = tenantContext;
         }
 
         public async Task<InventoryResponse> ReceiveStockAsync(
             ReceiveStockRequest request,
             CancellationToken cancellationToken = default)
         {
+            var storeExists = await _db.Stores
+            .AnyAsync(
+                x => x.Id == request.StoreId &&
+                     x.TenantId == _tenantContext.TenantId,
+                cancellationToken);
 
-            var storeExists = _db.Stores
-    .Any(x => x.Id == request.StoreId);
 
             if (!storeExists)
                 throw new KeyNotFoundException("Store not found.");
 
-            var productExists = _db.Products
-                .Any(x => x.Id == request.ProductId);
+
+            var productExists = await _db.Products
+                .AnyAsync(
+                    x => x.Id == request.ProductId &&
+                         x.TenantId == _tenantContext.TenantId,
+                    cancellationToken);
+
 
             if (!productExists)
                 throw new KeyNotFoundException("Product not found.");
@@ -86,6 +98,26 @@ namespace RetailFlow.Infrastructure.Services
             Guid productId,
             CancellationToken cancellationToken = default)
         {
+
+            var storeExists = await _db.Stores
+    .AnyAsync(
+        x => x.Id == storeId &&
+             x.TenantId == _tenantContext.TenantId,
+        cancellationToken);
+
+            if (!storeExists)
+                return null;
+
+            var productExists = await _db.Products
+                .AnyAsync(
+                    x => x.Id == productId &&
+                         x.TenantId == _tenantContext.TenantId,
+                    cancellationToken);
+
+            if (!productExists)
+                return null;
+
+
             var inventory =
                 await _inventoryRepository.GetByStoreAndProductAsync(
                     storeId,
@@ -104,15 +136,20 @@ namespace RetailFlow.Infrastructure.Services
                 StockMovementType movementType,
                 CancellationToken cancellationToken = default)
         {
-
             var storeExists = await _db.Stores
-         .AnyAsync(x => x.Id == storeId, cancellationToken);
+                .AnyAsync(
+                    x => x.Id == storeId &&
+                         x.TenantId == _tenantContext.TenantId,
+                    cancellationToken);
 
             if (!storeExists)
                 throw new KeyNotFoundException("Store not found.");
 
             var productExists = await _db.Products
-                .AnyAsync(x => x.Id == productId, cancellationToken);
+                .AnyAsync(
+                    x => x.Id == productId &&
+                         x.TenantId == _tenantContext.TenantId,
+                    cancellationToken);
 
             if (!productExists)
                 throw new KeyNotFoundException("Product not found.");
