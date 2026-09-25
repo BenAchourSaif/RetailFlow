@@ -1,11 +1,12 @@
 
+using RetailFlow.Infrastructure.Persistence.Repositories;
+using RetailFlow.Infrastructure.MultiTenancy;
+using RetailFlow.Infrastructure.Persistence;
+using RetailFlow.Infrastructure.Services;
 using RetailFlow.Application.Interfaces;
 using RetailFlow.Application.Services;
-using RetailFlow.Api.Middleware;
 using Microsoft.EntityFrameworkCore;
-using RetailFlow.Infrastructure.Persistence;
-using RetailFlow.Infrastructure.Persistence.Repositories;
-using RetailFlow.Infrastructure.Services;
+using RetailFlow.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,9 @@ builder.Services.AddScoped<IProductService,     ProductService>();
 builder.Services.AddScoped<IInventoryService,   InventoryService>();
 builder.Services.AddScoped<ISaleService,        SaleService>();
 builder.Services.AddScoped<IStoreService,       StoreService>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IStoreService, StoreService>();
+builder.Services.AddScoped<ITenantService,      TenantService>();
+builder.Services.AddScoped<IStoreService,       StoreService>();
+builder.Services.AddScoped<ITenantContext,      TenantContext>();
 
 //builder.Services.AddScoped<IInventoryService, InventoryService>();
 //builder.Services.AddSingleton<IProductService, ProductService>();
@@ -64,6 +66,6 @@ app.UseHttpsRedirection();
 app.UseCors("Frontend");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+app.UseMiddleware<TenantContextMiddleware>();
 app.MapControllers();
 app.Run();

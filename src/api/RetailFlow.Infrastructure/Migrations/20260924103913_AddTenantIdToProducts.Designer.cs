@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RetailFlow.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using RetailFlow.Infrastructure.Persistence;
 namespace RetailFlow.Infrastructure.Migrations
 {
     [DbContext(typeof(RetailFlowDbContext))]
-    partial class RetailFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260924103913_AddTenantIdToProducts")]
+    partial class AddTenantIdToProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

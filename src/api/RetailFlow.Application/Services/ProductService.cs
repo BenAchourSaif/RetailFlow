@@ -7,10 +7,11 @@ namespace RetailFlow.Application.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-
-        public ProductService(IProductRepository productRepository)
+        private readonly ITenantContext _tenantContext;
+        public ProductService(IProductRepository productRepository, ITenantContext tenantContext)
         {
             _productRepository = productRepository;
+            _tenantContext = tenantContext;
         }
 
         public async Task<ProductResponse> CreateAsync(
@@ -20,6 +21,7 @@ namespace RetailFlow.Application.Services
             var product = new Product
             {
                 Id = Guid.NewGuid(),
+                TenantId = _tenantContext.TenantId,
                 Sku = request.Sku,
                 Name = request.Name
             };

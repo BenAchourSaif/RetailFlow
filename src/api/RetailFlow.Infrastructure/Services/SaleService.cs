@@ -13,17 +13,19 @@ namespace RetailFlow.Infrastructure.Services
         private readonly IInventoryService _inventoryService;
         private readonly ISaleRepository _saleRepository;
         private readonly RetailFlowDbContext _db;
-
+        private readonly ITenantContext _tenantContext;
         public SaleService(
              IProductService productService,
              IInventoryService inventoryService,
              ISaleRepository saleRepository,
-             RetailFlowDbContext db)
+             RetailFlowDbContext db,
+             ITenantContext tenantContext)
         {
             _productService = productService;
             _inventoryService = inventoryService;
             _saleRepository = saleRepository;
             _db = db;
+            _tenantContext = tenantContext;
         }
 
 
@@ -37,7 +39,10 @@ namespace RetailFlow.Infrastructure.Services
             try
             {
                 var storeExists = await _db.Stores
-                    .AnyAsync(x => x.Id == request.StoreId, cancellationToken);
+                    .AnyAsync(
+                        x => x.Id == request.StoreId &&
+                             x.TenantId == _tenantContext.TenantId,
+                        cancellationToken);
 
                 if (!storeExists)
                     throw new KeyNotFoundException("Store not found.");

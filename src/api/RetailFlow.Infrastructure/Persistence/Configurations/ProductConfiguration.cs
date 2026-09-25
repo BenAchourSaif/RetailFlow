@@ -23,6 +23,15 @@ namespace RetailFlow.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.VatRate)
                 .HasPrecision(5, 2);
+
+            builder.HasOne(x => x.Tenant)
+            .WithMany()
+            .HasForeignKey(x => x.TenantId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(x => new { x.TenantId, x.Sku })
+                    .IsUnique();
+
         }
     }
 }
