@@ -21,6 +21,7 @@ builder.Services.AddScoped<IStoreService,       StoreService>();
 builder.Services.AddScoped<ITenantService,      TenantService>();
 builder.Services.AddScoped<IStoreService,       StoreService>();
 builder.Services.AddScoped<ITenantContext,      TenantContext>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 //builder.Services.AddScoped<IInventoryService, InventoryService>();
 //builder.Services.AddSingleton<IProductService, ProductService>();

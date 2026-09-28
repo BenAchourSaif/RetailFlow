@@ -14,5 +14,7 @@ namespace RetailFlow.Application.Interfaces
 
         Task SaveChangesAsync(
             CancellationToken cancellationToken = default);
+
+        Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken = default);
     }
 }

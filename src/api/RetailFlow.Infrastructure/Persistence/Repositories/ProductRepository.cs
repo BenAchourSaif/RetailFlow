@@ -38,5 +38,16 @@ namespace RetailFlow.Infrastructure.Persistence.Repositories
         {
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<IReadOnlyList<Product>> GetAllAsync(
+    CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Products
+                .AsNoTracking()
+                .Where(x => x.TenantId == _tenantContext.TenantId)
+                .OrderBy(x => x.Name)
+                .ToListAsync(cancellationToken);
+        }
+
     }
 }
