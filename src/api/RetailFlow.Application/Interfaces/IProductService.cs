@@ -11,5 +11,9 @@ namespace RetailFlow.Application.Interfaces
     Task<ProductResponse?> GetAsync(
         Guid id,
         CancellationToken cancellationToken = default);
+
+        Task<IReadOnlyList<ProductResponse>> GetAllAsync(
+    CancellationToken cancellationToken = default);
+
     }
 }

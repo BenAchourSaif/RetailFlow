@@ -65,5 +65,17 @@ namespace RetailFlow.Application.Services
                 IsActive = product.IsActive
             };
         }
+
+        public async Task<IReadOnlyList<ProductResponse>> GetAllAsync(
+    CancellationToken cancellationToken = default)
+        {
+            var products = await _productRepository.GetAllAsync(
+                cancellationToken);
+
+            return products
+                .Select(MapToResponse)
+                .ToList();
+        }
+
     }
 }

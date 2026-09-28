@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { getHealth, type HealthStatus } from "./api/health";
-
+import Layout from "./components/Layout";
+import DashboardPage from "./pages/DashboardPage";
+import ProductsPage from "./pages/ProductsPage";
+import InventoryPage from "./pages/InventoryPage";
+import SalesPage from "./pages/SalesPage";
 
 function App() {
-  const [health, setHealth] = useState<HealthStatus | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
- useEffect(() => {
-    getHealth()
-      .then(setHealth)
-      .catch((err) => setError(err.message));
-  }, []);
-
-  return (
-    <div>
-      <h1>RetailFlow</h1>
-      {error && <p style={{ color: "red" }}>Erreur : {error}</p>}
-      {health && <p>API status: {health.status} — {health.timestamp}</p>}
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route element={<Layout />}>
+                    <Route path="/" element={<DashboardPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/inventory" element={<InventoryPage />} />
+                    <Route path="/sales" element={<SalesPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

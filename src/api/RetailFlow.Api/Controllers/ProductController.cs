@@ -45,5 +45,17 @@ namespace RetailFlow.Api.Controllers
             return Ok(product);
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<ProductResponse>>> GetAll(
+    CancellationToken cancellationToken)
+        {
+            var products = await _productService.GetAllAsync(
+                cancellationToken);
+
+            return Ok(products);
+        }
+
+
     }
 }
